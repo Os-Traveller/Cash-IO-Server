@@ -1,13 +1,13 @@
 const express = require('express');
-const { usersCollections } = require('../../lib/collection');
+const { usersCollection } = require('../../lib/collection');
 const router = express.Router();
 
 router.post('/', async function (req, res) {
   try {
     const userInfo = req.body;
-    const user = await usersCollections.findOne({ email: userInfo.email });
+    const user = await usersCollection.findOne({ email: userInfo.email });
     if (!user) {
-      const newUser = await usersCollections.insertOne(userInfo);
+      const newUser = await usersCollection.insertOne(userInfo);
       if (!newUser.acknowledged)
         return res.send({ okay: false, msg: 'Can not crate the user' });
       return res.send({ okay: true, msg: 'User Created' });

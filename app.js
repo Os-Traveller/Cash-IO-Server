@@ -12,12 +12,14 @@ const port = process.env.PORT || 5000;
 // importing routes
 const singUp = require('./routes/authentication/signUp');
 const googleLogin = require('./routes/authentication/googleLogin');
-const transaction = require('./routes/transaction/transaction');
+const addTransaction = require('./routes/transaction/addTransaction');
+const userSummary = require('./routes/user/getSummary');
 
 // using routes
 app.use('/sign-up', singUp);
 app.use('/google-login', googleLogin);
-app.use('/transaction', transaction);
+app.use('/transaction/add', addTransaction);
+app.use('/user-summary', userSummary);
 
 // listen on port
 app.listen(port, function () {

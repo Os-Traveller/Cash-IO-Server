@@ -6,7 +6,7 @@ const {
 } = require('../../lib/collection');
 const router = express.Router();
 
-router.post('/add', async function (req, res) {
+router.post('/', async function (req, res) {
   try {
     const transactionInfo = req.body;
     const { amount, type, email, category } = transactionInfo;

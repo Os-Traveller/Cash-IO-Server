@@ -4,8 +4,8 @@ const {
   usersCollection,
   categoryCollection,
 } = require('../../lib/collection');
-const router = express.Router();
 
+const router = express.Router();
 router.post('/', async function (req, res) {
   try {
     const transactionInfo = req.body;

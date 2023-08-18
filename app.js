@@ -10,16 +10,20 @@ app.use(cors());
 const port = process.env.PORT || 5000;
 
 // importing routes
+const dev = require('./dev');
 const singUp = require('./routes/authentication/signUp');
 const googleLogin = require('./routes/authentication/googleLogin');
 const addTransaction = require('./routes/transaction/addTransaction');
 const userSummary = require('./routes/user/getSummary');
+const getTransaction = require('./routes/transaction/getTransaction');
 
 // using routes
+app.use('/dev', dev);
 app.use('/sign-up', singUp);
 app.use('/google-login', googleLogin);
 app.use('/transaction/add', addTransaction);
 app.use('/user-summary', userSummary);
+app.use('/get-transaction', getTransaction);
 
 // listen on port
 app.listen(port, function () {

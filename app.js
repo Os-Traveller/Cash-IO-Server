@@ -16,6 +16,7 @@ const googleLogin = require('./routes/authentication/googleLogin');
 const addTransaction = require('./routes/transaction/addTransaction');
 const userSummary = require('./routes/user/getSummary');
 const getTransaction = require('./routes/transaction/getTransaction');
+const updateTransaction = require('./routes/transaction/updateTransaction');
 
 // using routes
 app.use('/dev', dev);
@@ -24,6 +25,7 @@ app.use('/google-login', googleLogin);
 app.use('/transaction/add', addTransaction);
 app.use('/user-summary', userSummary);
 app.use('/get-transaction', getTransaction);
+app.use('/update-transaction', updateTransaction);
 
 // listen on port
 app.listen(port, function () {

@@ -5,7 +5,10 @@ const router = express.Router();
 router.get('/:email', async function (req, res) {
   try {
     const email = req.params.email;
-    const transactions = await transactionCollection.find({ email }).toArray();
+    const transactions = await transactionCollection
+      .find({ email })
+      .sort({ date: -1 })
+      .toArray();
     return res.send({ okay: true, data: transactions });
   } catch (err) {
     console.log(err);

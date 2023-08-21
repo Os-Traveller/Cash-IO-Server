@@ -6,7 +6,11 @@ router.post('/', async function (req, res) {
   try {
     const userInfo = req.body;
     console.log(userInfo);
-    const status = await usersCollection.insertOne(userInfo);
+    const status = await usersCollection.insertOne({
+      ...userInfo,
+      revenue: 0,
+      expense: 0,
+    });
     if (!status.acknowledged)
       return res.send({ okay: false, msg: 'Can not create a user.' });
 

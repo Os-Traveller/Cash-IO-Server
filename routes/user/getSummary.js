@@ -12,7 +12,7 @@ router.get('/:email', async function (req, res) {
     return res.send({
       okay: true,
       data: {
-        balance: userSummary.revenue - userSummary.expense,
+        balance: (userSummary.revenue | 0) - (userSummary.expense | 0),
         expense: userSummary.expense,
         revenue: userSummary.revenue,
       },

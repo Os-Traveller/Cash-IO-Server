@@ -4,13 +4,12 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
   // delete all transactions
-  await transactionCollection.deleteMany({});
-  await usersCollection.updateOne(
-    { email: 'faisal@gmail.com' },
-    { $set: { balance: 0, revenue: 0, expense: 0 } }
+  await usersCollection.updateMany(
+    {},
+    { $set: { revenue: 0, expense: 0 }, $unset: { balance: '' } }
   );
-
-  res.send('done');
+  await transactionCollection.deleteMany({});
+  return res.send('done');
 });
 
 module.exports = router;

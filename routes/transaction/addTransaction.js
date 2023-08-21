@@ -9,7 +9,8 @@ const router = express.Router();
 router.post('/', async function (req, res) {
   try {
     const transactionInfo = req.body;
-    const { amount, type, email, category } = transactionInfo;
+    const { amount, type, email, category, date } = transactionInfo;
+
     let updateDoc;
     if (type === 'expense') updateDoc = { expense: amount };
     else if (type === 'revenue') updateDoc = { revenue: amount };
@@ -21,7 +22,10 @@ router.post('/', async function (req, res) {
     const categoryInfo = await categoryCollection.findOne({ category });
     if (!categoryInfo) await categoryCollection.insertOne({ category });
 
-    const status = await transactionCollection.insertOne(transactionInfo);
+    const status = await transactionCollection.insertOne({
+      ...transactionInfo,
+      date: new Date(date),
+    });
     if (!status.acknowledged)
       return res.send({ okay: false, msg: 'Could not add the transaction' });
 

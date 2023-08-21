@@ -10,19 +10,12 @@ router.post('/', async function (req, res) {
   try {
     const transactionInfo = req.body;
     const { amount, type, email, category } = transactionInfo;
+    let updateDoc;
+    if (type === 'expense') updateDoc = { expense: amount };
+    else if (type === 'revenue') updateDoc = { revenue: amount };
 
-    if (type === 'expense')
-      await usersCollection.updateOne(
-        { email },
-        { $inc: { balance: -amount, expense: amount } },
-        { upsert: true }
-      );
-    else if (type === 'revenue')
-      await usersCollection.updateOne(
-        { email },
-        { $inc: { balance: amount, revenue: amount } },
-        { upsert: true }
-      );
+    // updating user info
+    await usersCollection.updateOne({ email }, { $inc: updateDoc });
 
     // checking if type already exist or not
     const categoryInfo = await categoryCollection.findOne({ category });

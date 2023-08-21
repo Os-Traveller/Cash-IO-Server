@@ -18,6 +18,7 @@ const userSummary = require('./routes/user/getSummary');
 const getTransaction = require('./routes/transaction/getTransaction');
 const updateTransaction = require('./routes/transaction/updateTransaction');
 const deleteTransaction = require('./routes/transaction/deleteTransaction');
+const getCategory = require('./routes/category/getCategory');
 
 // using routes
 app.use('/dev', dev);
@@ -28,6 +29,7 @@ app.use('/user-summary', userSummary);
 app.use('/get-transaction', getTransaction);
 app.use('/update-transaction', updateTransaction);
 app.use('/delete-transaction', deleteTransaction);
+app.use('/get-category', getCategory);
 
 // listen on port
 app.listen(port, function () {

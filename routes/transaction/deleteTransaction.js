@@ -1,22 +1,22 @@
-const express = require('express');
 const {
   transactionsCollection,
-  usersCollection,
+  walletsCollection,
 } = require('../../lib/collection');
+const express = require('express');
 const { ObjectId } = require('mongodb');
 const router = express.Router();
 
 router.delete('/', async function (req, res) {
   try {
-    const { _id, email, type, amount } = req.body;
+    const { _id, email, type, amount, wallet } = req.body;
 
-    // updating user balance and other information
-    let updateDoc;
+    // updating user's wallet balance and other information
 
-    if (type === 'expense') updateDoc = { expense: -amount };
-    else if (type === 'revenue') updateDoc = { revenue: -amount };
-
-    await usersCollection.updateOne({ email }, { $inc: updateDoc });
+    if (type === 'expense')
+      await walletsCollection.updateOne(
+        { email, name: wallet },
+        { $inc: { [type]: -amount } }
+      );
 
     const deleteStatus = await transactionsCollection.deleteOne({
       _id: new ObjectId(_id),
@@ -24,6 +24,7 @@ router.delete('/', async function (req, res) {
 
     if (!deleteStatus.acknowledged)
       return res.send({ okay: false, msg: 'Transaction can not be deleted' });
+
     return res.send({ okay: true, msg: 'Transaction has been deleted' });
   } catch (err) {
     console.log(err);

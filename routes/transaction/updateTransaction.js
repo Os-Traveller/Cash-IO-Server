@@ -3,7 +3,7 @@ const router = express.Router();
 const { ObjectId } = require('mongodb');
 const {
   transactionsCollection,
-  usersCollection,
+  walletsCollection,
 } = require('../../lib/collection');
 
 router.post('/', async function (req, res) {
@@ -11,38 +11,38 @@ router.post('/', async function (req, res) {
     const data = req.body;
     const {
       _id,
-      amount,
-      category,
-      type,
-      description,
       email,
-      prevType,
+      amount,
       prevAmount,
+      type,
+      prevType,
+      wallet,
+      prevWallet,
+      category,
+      description,
     } = data;
 
     const updateStatus = await transactionsCollection.updateOne(
       { _id: new ObjectId(_id) },
-      { $set: { amount, category, type, description } }
+      { $set: { amount, category, type, description, wallet } }
     );
 
     // updating user information
-    let updateDoc;
-    if (prevType !== type) {
-      // type changes
-      if (type === 'expense')
-        updateDoc = { expense: amount, revenue: -prevAmount };
-      else if (type === 'revenue')
-        updateDoc = { expense: -amount, revenue: amount };
+    if (wallet !== prevWallet) {
+      await walletsCollection.updateOne(
+        { email, name: prevWallet },
+        { $inc: { [prevType]: -prevAmount } }
+      );
+      await walletsCollection.updateOne(
+        { email, name: wallet },
+        { $inc: { [type]: amount } }
+      );
     } else {
-      // no type changes
-      if (type === 'expense') {
-        updateDoc = { expense: amount - prevAmount };
-      } else if (type === 'revenue') {
-        updateDoc = { revenue: amount - prevAmount };
-      }
+      await walletsCollection.updateOne(
+        { email, name: wallet },
+        { $inc: { [type]: amount, [prevType]: -prevAmount } }
+      );
     }
-
-    await usersCollection.updateOne({ email }, { $inc: updateDoc });
 
     if (!updateStatus.acknowledged)
       return res.send({ okay: false, msg: `Transaction can't be updated` });

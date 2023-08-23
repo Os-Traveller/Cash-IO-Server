@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  transactionCollection,
+  transactionsCollection,
   usersCollection,
 } = require('../../lib/collection');
 const { ObjectId } = require('mongodb');
@@ -18,7 +18,7 @@ router.delete('/', async function (req, res) {
 
     await usersCollection.updateOne({ email }, { $inc: updateDoc });
 
-    const deleteStatus = await transactionCollection.deleteOne({
+    const deleteStatus = await transactionsCollection.deleteOne({
       _id: new ObjectId(_id),
     });
 

@@ -1,11 +1,11 @@
 const express = require('express');
-const { transactionCollection } = require('../../lib/collection');
+const { transactionsCollection } = require('../../lib/collection');
 const router = express.Router();
 
 router.get('/:email', async function (req, res) {
   try {
     const email = req.params.email;
-    const transactions = await transactionCollection
+    const transactions = await transactionsCollection
       .find({ email })
       .sort({ date: -1 })
       .toArray();

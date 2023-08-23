@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 const {
-  transactionCollection,
+  transactionsCollection,
   usersCollection,
 } = require('../../lib/collection');
 
@@ -20,7 +20,7 @@ router.post('/', async function (req, res) {
       prevAmount,
     } = data;
 
-    const updateStatus = await transactionCollection.updateOne(
+    const updateStatus = await transactionsCollection.updateOne(
       { _id: new ObjectId(_id) },
       { $set: { amount, category, type, description } }
     );

@@ -1,14 +1,17 @@
 const express = require('express');
-const { transactionCollection, usersCollection } = require('./lib/collection');
+const {
+  transactionsCollection,
+  usersCollection,
+  categoriesCollection,
+} = require('./lib/collection');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
   // delete all transactions
-  await usersCollection.updateMany(
-    {},
-    { $set: { revenue: 0, expense: 0 }, $unset: { balance: '' } }
-  );
-  await transactionCollection.deleteMany({});
+  await transactionsCollection.deleteMany({});
+  // delete all users
+  await usersCollection.deleteMany({});
+  await categoriesCollection.deleteMany({});
   return res.send('done');
 });
 

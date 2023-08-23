@@ -7,11 +7,13 @@ router.post('/', async function (req, res) {
     const userInfo = req.body;
     const user = await usersCollection.findOne({ email: userInfo.email });
     if (!user) {
-      const newUser = await usersCollection.insertOne({
-        ...userInfo,
-        revenue: 0,
+      await walletsCollection.insertOne({
+        email: userInfo.email,
+        name: 'Cash',
         expense: 0,
+        revenue: 0,
       });
+      const newUser = await usersCollection.insertOne(userInfo);
       if (!newUser.acknowledged)
         return res.send({ okay: false, msg: 'Can not crate the user' });
       return res.send({ okay: true, msg: 'User Created' });

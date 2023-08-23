@@ -1,28 +1,31 @@
 const express = require('express');
 const {
-  transactionCollection,
-  usersCollection,
-  categoryCollection,
+  transactionsCollection,
+  categoriesCollection,
+  walletsCollection,
 } = require('../../lib/collection');
 
 const router = express.Router();
 router.post('/', async function (req, res) {
   try {
     const transactionInfo = req.body;
-    const { amount, type, email, category, date } = transactionInfo;
+    const { amount, type, email, category, date, wallet } = transactionInfo;
 
     let updateDoc;
     if (type === 'expense') updateDoc = { expense: amount };
     else if (type === 'revenue') updateDoc = { revenue: amount };
 
     // updating user info
-    await usersCollection.updateOne({ email }, { $inc: updateDoc });
+    await walletsCollection.updateOne(
+      { email, name: wallet },
+      { $inc: updateDoc }
+    );
 
     // checking if type already exist or not
-    const categoryInfo = await categoryCollection.findOne({ category });
-    if (!categoryInfo) await categoryCollection.insertOne({ category });
+    const categoryInfo = await categoriesCollection.findOne({ category });
+    if (!categoryInfo) await categoriesCollection.insertOne({ category });
 
-    const status = await transactionCollection.insertOne({
+    const status = await transactionsCollection.insertOne({
       ...transactionInfo,
       date: new Date(date),
     });

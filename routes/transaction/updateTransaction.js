@@ -6,7 +6,7 @@ const {
   walletsCollection,
 } = require('../../lib/collection');
 
-router.post('/', async function (req, res) {
+router.patch('/', async function (req, res) {
   try {
     const data = req.body;
     const {

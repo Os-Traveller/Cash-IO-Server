@@ -21,6 +21,7 @@ const deleteTransaction = require('./routes/transaction/deleteTransaction');
 const getCategory = require('./routes/category/getCategory');
 const addWallet = require('./routes/wallet/addWallet');
 const updateWallet = require('./routes/wallet/updateWallet');
+const transfer = require('./routes/wallet/transferWallet');
 
 // using routes
 app.use('/dev', dev);
@@ -34,6 +35,7 @@ app.use('/delete-transaction', deleteTransaction);
 app.use('/get-category', getCategory);
 app.use('/add-wallet', addWallet);
 app.use('/update-wallet', updateWallet);
+app.use('/transfer', transfer);
 
 // listen on port
 app.listen(port, function () {
